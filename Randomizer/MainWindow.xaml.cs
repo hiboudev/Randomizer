@@ -39,11 +39,11 @@ namespace Randomizer
             colorIndex = -1;
             rand = new Random();
             colors = new Color[5] {
-                Color.FromRgb(80, 130, 228),
-                Color.FromRgb(171, 80, 228),
+                Color.FromRgb(90, 139, 238),
+                Color.FromRgb(185, 96, 240),
                 Color.FromRgb(105, 190, 80),
-                Color.FromRgb(190, 158, 80),
-                Color.FromRgb(190, 80, 104),
+                Color.FromRgb(204, 172, 90),
+                Color.FromRgb(222, 89, 95),
             };
 
             textField.Text = "";
