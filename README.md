@@ -7,4 +7,4 @@ A simple randomizer, useful to randomize your decisions at poker.
 
 Download: https://github.com/hiboudev/Randomizer/releases
 
-![randomizer image](https://drive.google.com/uc?export=download&id=1tvB0ADrF0jag3dSlGEV5H2jeRiQ64lRJ)
+![randomizer image](/randomizer.png)
