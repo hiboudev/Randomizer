@@ -89,7 +89,7 @@ namespace Randomizer
         private void DrawNumber(object sender, MouseEventArgs e)
         {
             textField.Foreground = NextColor();
-            textField.Text = rand.Next(100).ToString();
+            textField.Text = rand.Next(1, 101).ToString();
         }
 
         private Brush NextColor()
