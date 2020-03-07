@@ -14,6 +14,7 @@
             <Viewbox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Keep on top" Name="menuItemKeepOnTop" IsCheckable="True"/>
+                    <MenuItem Header="Show in taskbar" Name="menuItemShowInTaskbar" IsCheckable="True"/>
                 </ContextMenu>
             </Viewbox.ContextMenu>
         </Viewbox>

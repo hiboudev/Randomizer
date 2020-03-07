@@ -50,8 +50,10 @@ namespace Randomizer
             MouseEnter += DrawNumber;
             MouseDown += HandleMouseDown;
             KeyDown += HandleKeyDown;
-            menuItemKeepOnTop.Checked += HandleMenuItemChanged;
-            menuItemKeepOnTop.Unchecked += HandleMenuItemChanged;
+            menuItemKeepOnTop.Checked += HandleMenuItemKeepOnTopChanged;
+            menuItemKeepOnTop.Unchecked += HandleMenuItemKeepOnTopChanged;
+            menuItemShowInTaskbar.Checked += HandleMenuItemShowInTaskbarChanged;
+            menuItemShowInTaskbar.Unchecked += HandleMenuItemShowInTaskbarChanged;
             Closing += HandleWindowClosing;
             SourceInitialized += HandleSourceInitialized;
         }
@@ -60,18 +62,25 @@ namespace Randomizer
         {
             this.SetPlacement(Settings.Default.MainWindowPlacement);
             Topmost = menuItemKeepOnTop.IsChecked = Settings.Default.KeepOnTop;
+            ShowInTaskbar = menuItemShowInTaskbar.IsChecked = Settings.Default.ShowInTaskbar;
         }
 
         private void HandleWindowClosing(object sender, EventArgs e)
         {
             Settings.Default.MainWindowPlacement = this.GetPlacement();
             Settings.Default.KeepOnTop = menuItemKeepOnTop.IsChecked;
+            Settings.Default.ShowInTaskbar = ShowInTaskbar;
             Settings.Default.Save();
         }
 
-        private void HandleMenuItemChanged(object sender, RoutedEventArgs e)
+        private void HandleMenuItemKeepOnTopChanged(object sender, RoutedEventArgs e)
         {
             Topmost = menuItemKeepOnTop.IsChecked == true;
+        }
+
+        private void HandleMenuItemShowInTaskbarChanged(object sender, RoutedEventArgs e)
+        {
+            ShowInTaskbar = menuItemShowInTaskbar.IsChecked == true;
         }
 
         private void HandleKeyDown(object sender, KeyEventArgs e)
