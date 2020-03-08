@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -31,6 +32,7 @@ namespace Randomizer
         private readonly Random rand;
         private readonly Color[] colors;
         private int colorIndex;
+        private NotifyIcon notifyIcon;
 
         public MainWindow()
         {
@@ -56,6 +58,25 @@ namespace Randomizer
             menuItemShowInTaskbar.Unchecked += HandleMenuItemShowInTaskbarChanged;
             Closing += HandleWindowClosing;
             SourceInitialized += HandleSourceInitialized;
+
+            notifyIcon = new System.Windows.Forms.NotifyIcon();
+            notifyIcon.Icon = System.Drawing.Icon.ExtractAssociatedIcon(System.Reflection.Assembly.GetEntryAssembly().ManifestModule.Name);
+            notifyIcon.MouseDown += (s, args) => ShowMainWindow();
+            notifyIcon.ContextMenuStrip = new System.Windows.Forms.ContextMenuStrip();
+            notifyIcon.ContextMenuStrip.Items.Add("Close").Click += (s, e) => Close();
+        }
+
+        private void ShowMainWindow()
+        {
+            if (IsVisible)
+            {
+                if (WindowState == WindowState.Minimized)
+                    WindowState = WindowState.Normal;
+                if (!IsActive)
+                    Activate();
+            }
+            else
+                Show();
         }
 
         private void HandleSourceInitialized(object sender, EventArgs e)
@@ -63,6 +84,7 @@ namespace Randomizer
             this.SetPlacement(Settings.Default.MainWindowPlacement);
             Topmost = menuItemKeepOnTop.IsChecked = Settings.Default.KeepOnTop;
             ShowInTaskbar = menuItemShowInTaskbar.IsChecked = Settings.Default.ShowInTaskbar;
+            notifyIcon.Visible = !ShowInTaskbar;
         }
 
         private void HandleWindowClosing(object sender, EventArgs e)
@@ -71,6 +93,8 @@ namespace Randomizer
             Settings.Default.KeepOnTop = menuItemKeepOnTop.IsChecked;
             Settings.Default.ShowInTaskbar = ShowInTaskbar;
             Settings.Default.Save();
+
+            notifyIcon.Dispose();
         }
 
         private void HandleMenuItemKeepOnTopChanged(object sender, RoutedEventArgs e)
@@ -81,9 +105,10 @@ namespace Randomizer
         private void HandleMenuItemShowInTaskbarChanged(object sender, RoutedEventArgs e)
         {
             ShowInTaskbar = menuItemShowInTaskbar.IsChecked == true;
+            notifyIcon.Visible = !ShowInTaskbar;
         }
 
-        private void HandleKeyDown(object sender, KeyEventArgs e)
+        private void HandleKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
                 System.Windows.Application.Current.Shutdown();
@@ -95,7 +120,7 @@ namespace Randomizer
                 DragMove();
         }
 
-        private void DrawNumber(object sender, MouseEventArgs e)
+        private void DrawNumber(object sender, System.Windows.Input.MouseEventArgs e)
         {
             textField.Foreground = NextColor();
             textField.Text = rand.Next(1, 101).ToString();
